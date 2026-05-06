@@ -49,7 +49,8 @@ export default function ProjectDetail() {
   const handleUpdateTask = async (e) => {
     e.preventDefault(); setError(''); setSaving(true);
     try {
-      await api.put(`/tasks/${showEditTask.id}`, taskForm);
+      const payload = isAdmin ? taskForm : { status: taskForm.status };
+      await api.put(`/tasks/${showEditTask.id}`, payload);
       setShowEditTask(null); fetchProject();
     } catch (err) { setError(err.response?.data?.error || 'Failed.'); }
     finally { setSaving(false); }
