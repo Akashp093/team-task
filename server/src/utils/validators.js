@@ -42,7 +42,7 @@ function validateProject(body) {
 
 function validateTask(body) {
   const errors = [];
-  if (!body.title || body.title.trim().length < 1) {
+  if (body.title !== undefined && body.title.trim().length < 1) {
     errors.push('Task title is required.');
   }
   const validStatuses = ['TODO', 'IN_PROGRESS', 'DONE'];

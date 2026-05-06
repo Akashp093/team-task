@@ -104,13 +104,12 @@ router.put('/tasks/:id', auth, async (req, res) => {
       if (task.assigneeId !== req.user.id) {
         return res.status(403).json({ error: 'Members can only update tasks assigned to them.' });
       }
-      // Members can only change status
-      const allowed = ['status'];
-      const updateKeys = Object.keys(req.body);
-      const unauthorized = updateKeys.filter((k) => !allowed.includes(k));
-      if (unauthorized.length > 0) {
-        return res.status(403).json({ error: 'Members can only update task status.' });
+      // Only allow updating status
+      const status = req.body.status;
+      if (!status) {
+        return res.status(400).json({ error: 'Status is required.' });
       }
+      req.body = { status };
     }
 
     const errors = validateTask(req.body);
